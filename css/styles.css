@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.header-container {
+    background-color: #4a90e2;
+    padding: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Para que el botón se posicione correctamente */
+}
+
+.penguin-icon {
+    width: 50px;
+    margin-right: 10px;
+}
+
+.reminder {
+    margin: 20px auto;
+    max-width: 400px;
+}
+
+.reminder-item {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.cancel-button, .accept-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.accept-button {
+    background-color: #4caf50;
+    color: white;
+}
+
+.interactions {
+    margin-top: 20px;
+}
+
+.assist-icon, .play-button {
+    width: 100px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.logout-button {
+    background: url('logout-icon.png') no-repeat center center;
+    background-size: contain;
+    width: 80px; /* Tamaño aumentado */
+    height: 80px; /* Tamaño aumentado */
+    border: none;
+    cursor: pointer;
+    position: absolute; /* Cambiado a posición absoluta */
+    top: 20px; /* Ajustar la distancia desde la parte superior */
+    right: 20px; /* Ajustar la distancia desde la derecha */
+}
+
+.logout-button:hover {
+    opacity: 0.8; /* Efecto al pasar el mouse */
+}
+.logout-icon {
+    width: 30px; /* Tamaño ajustado */
+    height: auto; /* Mantiene la proporción */
+    margin-left: 10px; /* Espacio entre el texto y el icono */
+}

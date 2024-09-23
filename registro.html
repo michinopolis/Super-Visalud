@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Registro</title>
+    <link rel="stylesheet" href="css/registro.css">
+</head>
+<body>
+    <header>
+        <h1>Registro</h1>
+        <img src="penguin.png" alt="Pingüino" class="penguin-icon">
+    </header>
+    <main>
+        <form id="registration-form">
+            <div class="form-group">
+                <label for="nombre">Nombre y Apellidos:</label>
+                <input type="text" id="nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="edad">Edad:</label>
+                <input type="number" id="edad" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="enfermedad">Enfermedad:</label>
+                <input type="text" id="enfermedad" required>
+            </div>
+
+            <div class="form-group">
+                <label for="genero">Género:</label>
+                <select id="genero" required>
+                    <option value="">Seleccione...</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+
+            <button type="submit">Siguiente</button>
+        </form>
+    </main>
+    <script>
+        // Verifica si ya hay un usuario registrado
+        if (localStorage.getItem('nombre')) {
+            window.location.href = 'index.html'; // Redirige si ya está registrado
+        }
+
+        document.getElementById('registration-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Previene el envío del formulario
+
+            const nombre = document.getElementById('nombre').value.trim();
+            const edad = document.getElementById('edad').value.trim();
+            const enfermedad = document.getElementById('enfermedad').value.trim();
+            const genero = document.getElementById('genero').value;
+
+            if (nombre && edad >= 0 && enfermedad && genero) {
+                localStorage.setItem('nombre', nombre); // Guarda el nombre
+                window.location.href = 'index.html'; // Redirige a la página principal
+            } else {
+                alert('Por favor, completa todos los campos correctamente.');
+            }
+        });
+    </script>
+</body>
+</html>

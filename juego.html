@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Memoria</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #e0f7fa;
+            position: relative;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            color: #00796b;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        canvas {
+            border: 2px solid #00796b;
+            display: block;
+            max-width: 100%;
+            height: auto;
+            width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-container {
+            width: 90vw;
+            max-width: 400px;
+            height: 90vw;
+            max-height: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-buttons {
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #00897b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .modal-buttons button:hover {
+            background-color: #00796b;
+        }
+
+        .volver-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background-color: #e0f7fa;
+            border: 1px solid #00796b;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 5;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .volver-btn:hover {
+            background-color: #b2ebf2;
+        }
+
+        .card {
+            border-radius: 8px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Juego de Memoria</h1>
+
+    <a href="index.html"><button class="volver-btn" onclick="volver('index.html')">Volver</button></a>
+
+    <div class="game-container">
+        <canvas id="memoryGameCanvas" width="400" height="400"></canvas>
+    </div>
+
+    <!-- Modal de victoria -->
+    <div class="modal" id="winModal">
+        <div class="modal-content">
+            <h2>¡Felicidades, ganaste!</h2>
+            <div class="modal-buttons">
+                <button onclick="reiniciarJuego()">Reiniciar Juego</button>
+                <a href="index.html"><button onclick="volver()">Volver</button></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('memoryGameCanvas');
+        const ctx = canvas.getContext('2d');
+        const winModal = document.getElementById('winModal');
+
+        const rows = 4;
+        const cols = 4;
+        const cardSize = canvas.width / cols;
+        let cards = [];
+        let selectedCards = [];
+        let flippedCards = [];
+
+        function drawBoard() {
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const x = col * cardSize;
+                    const y = row * cardSize;
+
+                    ctx.fillStyle = '#b2ebf2';
+                    ctx.fillRect(x + 5, y + 5, cardSize - 10, cardSize - 10);
+                }
+            }
+        }
+
+        function shuffleCards() {
+            const cardImages = [];
+            for (let i = 0; i < (rows * cols) / 2; i++) {
+                cardImages.push(i);
+                cardImages.push(i);
+            }
+            cards = cardImages.sort(() => Math.random() - 0.5);
+        }
+
+        function drawCards() {
+            for (let i = 0; i < cards.length; i++) {
+                const row = Math.floor(i / cols);
+                const col = i % cols;
+                const x = col * cardSize;
+                const y = row * cardSize;
+
+                if (flippedCards.includes(i) || selectedCards.includes(i)) {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(x + 5, y + 5, cardSize - 10, cardSize - 10);
+                    ctx.fillStyle = '#000000';
+                    ctx.font = '40px Arial';
+                    ctx.fillText(cards[i], x + 35, y + 65);
+                } else {
+                    ctx.fillStyle = '#b2ebf2';
+                    ctx.fillRect(x + 5, y + 5, cardSize - 10, cardSize - 10);
+                }
+            }
+            checkWin();
+        }
+
+        function checkWin() {
+            if (flippedCards.length === cards.length) {
+                winModal.style.display = 'flex';
+            }
+        }
+
+        canvas.addEventListener('click', function (event) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+
+            const col = Math.floor(mouseX / cardSize);
+            const row = Math.floor(mouseY / cardSize);
+            const index = row * cols + col;
+
+            if (selectedCards.includes(index) || flippedCards.includes(index)) return;
+
+            selectedCards.push(index);
+
+            if (selectedCards.length === 2) {
+                if (cards[selectedCards[0]] === cards[selectedCards[1]]) {
+                    flippedCards.push(...selectedCards);
+                    selectedCards = [];
+                } else {
+                    setTimeout(() => {
+                        selectedCards = [];
+                        drawCards();
+                    }, 1000);
+                }
+            }
+            drawCards();
+        });
+
+        function reiniciarJuego() {
+            winModal.style.display = 'none';
+            flippedCards = [];
+            selectedCards = [];
+            shuffleCards();
+            drawBoard();
+            drawCards();
+        }
+
+        function volver() {
+            alert('Volver a la página anterior');
+        }
+
+        function init() {
+            shuffleCards();
+            drawBoard();
+            drawCards();
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

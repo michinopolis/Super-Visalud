@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Virtual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            color: #00796b;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+        }
+        .header {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .header button {
+            padding: 10px;
+            border: none;
+            background-color: #00796b;
+            color: #ffffff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .chatbox {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            height: 500px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            position: relative; /* Posicionamiento relativo */
+            z-index: 1; /* Asegurar que esté por debajo del pingüino */
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .user-message {
+            text-align: right;
+            color: #004d40;
+        }
+        .bot-message {
+            text-align: left;
+            color: #004d40;
+        }
+        .input-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #00796b;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .input-group button {
+            padding: 10px;
+            border: none;
+            background-color: #00796b;
+            color: #ffffff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .penguin {
+            position: absolute;
+            top: 50%; /* Centrado verticalmente */
+            left: 50%; /* Centrado horizontalmente */
+            transform: translate(-50%, -50%); /* Para centrar completamente */
+            width: 150px; /* Tamaño del pingüino */
+            opacity: 0.5; /* Transparente */
+            z-index: 3; /* Encima de todo */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><button>Volver</button></a>
+    </div>
+    <div class="container">
+        <h1>Asistente Virtual</h1>
+        <div class="chatbox" id="chatbox">
+            <div class="message bot-message">Hola, soy tu asistente virtual. ¿Cómo te sientes hoy?</div>
+        </div>
+        <div class="input-group">
+            <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+    <img src="pinguin.png" alt="Pingüino Asistente" class="penguin">
+
+    <script>
+        function sendMessage() {
+            var userInput = document.getElementById('userInput').value;
+            var chatbox = document.getElementById('chatbox');
+            
+            if (userInput.trim() === '') {
+                return;
+            }
+            
+            // Display user message
+            var userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'message user-message';
+            userMessageDiv.textContent = userInput;
+            chatbox.appendChild(userMessageDiv);
+            
+            // Process the user input and provide a response
+            var response = generateResponse(userInput);
+            
+            // Display bot response
+            var botMessageDiv = document.createElement('div');
+            botMessageDiv.className = 'message bot-message';
+            botMessageDiv.textContent = response;
+            chatbox.appendChild(botMessageDiv);
+            
+            // Scroll to the bottom of the chatbox
+            chatbox.scrollTop = chatbox.scrollHeight;
+            
+            // Clear user input
+            document.getElementById('userInput').value = '';
+        }
+
+        function generateResponse(userInput) {
+            var lowerInput = userInput.toLowerCase();
+            
+            if (lowerInput.includes('triste') || lowerInput.includes('enojado') || lowerInput.includes('estresado') ||
+                lowerInput.includes('pesimista') || lowerInput.includes('miedo') || lowerInput.includes('temor')) {
+                return 'Lo siento mucho que te sientas así. Recuerda que las dificultades son parte de la vida, pero siempre hay esperanza. Busca apoyo en tus seres queridos o en profesionales si lo necesitas. ¡No estás solo/a en esto!';
+            } else if (lowerInput.includes('salud') || lowerInput.includes('me siento mal') || lowerInput.includes('dolor')) {
+                return 'Es importante que sigas tu tratamiento y consultes a un médico real para recibir la atención adecuada. Mientras tanto, asegúrate de descansar y considera hacer una actividad recreativa que disfrutes. Si necesitas más ayuda, puedes unirte a nuestra comunidad o probar nuestro juego para distraerte.';
+            } else if (lowerInput.includes('no puedo')) {
+                return 'Entiendo que a veces puede ser difícil. Recuerda que puedes unirte a nuestra comunidad para recibir apoyo o probar nuestro juego para distraerte y relajarte un poco.';
+            } else if (lowerInput.includes('gracias') || lowerInput.includes('muchas gracias')) {
+                return '¡De nada! Si necesitas más ayuda, no dudes en preguntar.';
+            } else if (lowerInput.includes('feliz') || lowerInput.includes('alegre')) {
+                return '¡Que bueno! Si necesitas ayuda, no dudes en preguntar.';
+            } else if (lowerInput.includes('esta bien') || lowerInput.includes('claro')) {
+                return '¡No te desanimes! Cuentas con mi apoyo moral.';
+            } else if (lowerInput.includes('gracioso') || lowerInput.includes('chiste')) {
+                return 'Jaimito le pregunta a su madre: "¿Mamá, qué es lo que tienes en la barriga?". Y su madre embarazada le contesta: "Pues tengo un bebé que me ha regalado tu padre". El niño la mira con cara de susto y sale corriendo hasta donde está su padre y le dice: "Papá, Papá, ¡no le regales más bebés a mamá porque se los come!".';
+            } else if (lowerInput.includes('recuerdo') || lowerInput.includes('algo bonito que me paso')) {
+                return '¡Gracias por tu confianza! Tu historia es intrigante pero ¿sabes que es la cosa mas divertida y emocionante de la vida? ¡El presente!.';
+            } else if (lowerInput.includes('hola')) {
+                return '¡Hola! Espero que tengas un gran día. ¿En qué puedo ayudarte hoy?';
+            } else if (lowerInput.includes('buenas tardes')) {
+                return '¡Buenas tardes! ¿Cómo ha ido tu día hasta ahora?';
+            } else if (lowerInput.includes('buenos dias')) {
+                return '¡Buenos días! Espero que tengas un día productivo y positivo.';
+            } else if (lowerInput.includes('buenas noches')) {
+                return '¡Buenas noches! Espero que tengas un descanso reparador.';
+            } else if (lowerInput.includes('que haces')) {
+                return 'Estoy aquí para ayudarte. ¿Tienes alguna pregunta o necesitas asistencia?';
+            } else if (lowerInput.includes('me consideras bonito')) {
+                return 'La belleza está en el interior, y lo más importante es cómo te sientes contigo mismo.';
+            } else if (lowerInput.includes('me consideras bonita')) {
+                return 'La belleza viene en muchas formas, y lo más importante es que te sientas bien contigo misma.';
+            } else if (lowerInput.includes('feo')) {
+                return 'No te preocupes por eso. Lo que importa es cómo te ves a ti mismo y cómo tratas a los demás.';
+            } else if (lowerInput.includes('fea')) {
+                return 'Recuerda que la belleza es subjetiva. Eres única y eso es lo que importa.';
+            } else if (lowerInput.includes('matarme') || lowerInput.includes('morirme') || lowerInput.includes('suicidarme')) {
+                return 'Lamento que te sientas así. Es importante hablar con alguien que pueda ayudar, como un profesional o un ser querido. No estás solo/a en esto.';
+            } else if (lowerInput.includes('curarme') || lowerInput.includes('sanarme') || lowerInput.includes('recuperarme')) {
+                return 'Buscar ayuda es un paso importante. Hay personas y recursos disponibles para apoyarte en tu camino hacia la sanación.';
+            } else if (lowerInput.includes('consejo')) {
+                const randomAdvice = [
+                    "Tómate tiempo para ti mismo.",
+                    "Practica la gratitud diariamente.",
+                    "Mantén un diario para tus pensamientos.",
+                    "Haz ejercicio regularmente para liberar endorfinas.",
+                    "No tengas miedo de pedir ayuda cuando la necesites."
+                ];
+                return randomAdvice[Math.floor(Math.random() * randomAdvice.length)];
+            } else {
+                return 'No estoy seguro de cómo responder a eso, pero estoy aquí para ayudarte en lo que necesites.';
+            }
+        }
+    </script>
+</body>
+</html>

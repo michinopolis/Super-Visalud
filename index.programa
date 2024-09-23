@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Recordatorios</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <img src="hola.png" alt="Pingüino" class="penguin-icon">
+            <h1>¡BIENVENIDO!</h1>
+        </div>
+    </header>
+    <main>
+        <section class="reminder">
+            <div class="reminder-item">
+                <h2><input type="text" placeholder="Nombre del tratamiento" id="treatment-name-1"></h2>
+                <p>
+                    <input type="date" id="date-1">  
+                    <input type="time" id="time-1">
+                </p>
+                <div class="buttons">
+                    <button class="cancel-button">CANCELAR</button>
+                    <button class="accept-button" onclick="setReminder(1)">ACEPTAR</button>
+                </div>
+            </div>
+            <div class="reminder-item">
+                <h2><input type="text" placeholder="Nombre del tratamiento" id="treatment-name-2"></h2>
+                <p>
+                    <input type="date" id="date-2"> 
+                    <input type="time" id="time-2">
+                </p>
+                <div class="buttons">
+                    <button class="cancel-button">CANCELAR</button>
+                    <button class="accept-button" onclick="setReminder(2)">ACEPTAR</button>
+                </div>
+            </div>
+        </section>
+        <section class="interactions">
+            <img src="pinguino.png" alt="Asistente Virtual" class="assist-icon">
+            <img src="play.png" alt="Iniciar Juego" class="play-button">
+        </section>
+    </main>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
